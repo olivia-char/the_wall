@@ -1,0 +1,35 @@
+<div class="container">
+	<p>Coding Dojo Wall .... Welcome <%= @users.name %> .... <a href="/users/logout" data-method="delete">LOGOUT</a></p>
+	<hr>
+
+	<h1>Post a Message</h1>
+
+	<form action="/messages/create" method="post">
+	<input type= "hidden" name= "authenticity_token" value="<%= form_authenticity_token %>">
+		<div class="form-group">
+  			<textarea class="form-control" rows="5" id="message" name="message[message]"></textarea>
+  			<button type="submit">Create a Message</button>
+		</div>
+	</form>
+
+	<% @messages.each do |message| %>
+	
+		<h3><%= message.user.name %> <%= message.created_at.strftime(" - %B %d, %Y") %></h3>
+		<p><%= message.message %></p>
+		
+		
+		<h4>Comments:</h4>
+
+		<% message.comments.each do |comment| %>
+			<strong><p><%= comment.user.name %> <%= comment.created_at.strftime(" - %B %d, %Y") %></p></strong>
+			<p><%= comment.comment %></p>
+		<% end %>
+
+		<form action="/comments/<%= message.id %>" method="post">
+			<input type= "hidden" name= "authenticity_token" value="<%= form_authenticity_token %>">
+			<textarea class="form-control" rows="5" id="comment" name="comment[comment]"></textarea>
+			<button type="submit">Post a Comment</button>
+		</form>
+	<% end %>
+
+</div>
